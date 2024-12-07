@@ -1,0 +1,233 @@
+/* General Container Styling */
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center; /* Ensures text alignment is centered */
+    background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 1s ease-in-out;
+    display: flex;
+    flex-direction: column; /* Stacks child elements vertically */
+    align-items: center; /* Centers child elements horizontally */
+    justify-content: center; /* Centers child elements vertically */
+    min-height: 100vh; /* Makes container take the full viewport height */
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  /* Title and Player Count */
+  .title {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #333;
+    font-family: "Arial", sans-serif;
+  }
+  
+  .player-count {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: #555;
+  }
+  
+  /* Toggle Button Styling */
+  .toggle-button {
+    background: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .toggle-button:hover {
+    background: #45a049;
+  }
+  
+  /* History Section Styling */
+  .history {
+    background: #ffffff;
+    padding: 15px;
+    margin: 20px auto;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-height: 250px;
+    overflow-y: auto;
+    width: 90%;
+  }
+  
+  .history ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .history-item {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 8px;
+    margin-bottom: 5px;
+    background: #f9f9f9;
+    border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  .history-item span {
+    font-size: 0.9rem;
+    color: #333;
+  }
+  
+  .history-item:hover {
+    background: #e0f7fa;
+  }
+  
+  /* Grid Styling */
+  .grid {
+    display: grid;
+    gap: 8px; /* Adds spacing between rows and columns */
+    margin: 20px auto;
+    max-width: 100%;
+    width: 100%;
+    padding: 10px; /* Ensures the grid doesn't touch container edges */
+  }
+  
+  /* Default Layout */
+  .grid {
+    grid-template-columns: repeat(10, 1fr); /* 10 squares per row */
+    grid-auto-rows: 1fr; /* Ensures uniform rows */
+  }
+  
+  .grid-block {
+    background: #f0f0f0;
+    display: flex;
+    margin: 10px;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    aspect-ratio: 1; /* Ensures blocks remain square */
+    border-radius: 5px;
+    transition: background 0.3s, transform 0.2s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adds visual separation */
+  }
+  
+  .grid-block:hover {
+    background: #e0e0e0;
+    transform: scale(1.1);
+  }
+  
+  .grid-block.filled {
+    background: #4caf50;
+    color: white;
+    pointer-events: none;
+    animation: popIn 0.3s ease-out;
+  }
+  
+  @keyframes popIn {
+    0% {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  /* Medium Screens (Tablets) */
+  @media (max-width: 768px) {
+    .grid {
+      grid-template-columns: repeat(8, 1fr); /* 8 blocks per row */
+      gap: 10px; /* Consistent spacing */
+      margin: 10px;
+    }
+  
+    .grid-block {
+      font-size: 0.9rem;
+    }
+  
+    .history {
+      width: 95%;
+      margin: 10px;
+    }
+  
+    .title {
+      font-size: 1.8rem;
+    }
+  
+    .player-count {
+      font-size: 1rem;
+    }
+  
+    .toggle-button {
+      padding: 8px 16px;
+      font-size: 0.9rem;
+    }
+  }
+  
+  /* Small Screens (Phones) */
+  @media (max-width: 480px) {
+    .grid {
+      grid-template-columns: repeat(6, 1fr); /* 6 blocks per row */
+      gap: 10px; /* Consistent spacing */
+      margin: 10px;
+    }
+  
+    .grid-block {
+      font-size: 0.8rem;
+    }
+  
+    .history {
+      width: 100%;
+      padding: 10px;
+      margin: 10px;
+    }
+  
+    .title {
+      font-size: 1.5rem;
+    }
+  
+    .player-count {
+      font-size: 0.9rem;
+    }
+  
+    .toggle-button {
+      padding: 6px 12px;
+      font-size: 0.8rem;
+    }
+  }
+  
+  /* Ultra-Small Screens (Small Phones) */
+  @media (max-width: 320px) {
+    .grid {
+      grid-template-columns: repeat(4, 1fr); /* 4 blocks per row */
+      gap: 10px; /* Consistent spacing */
+      margin: 10px;
+    }
+  
+    .grid-block {
+      font-size: 0.7rem;
+    }
+  
+    .history {
+      padding: 8px;
+      font-size: 0.7rem;
+    }
+  
+    .toggle-button {
+      padding: 5px 10px;
+      font-size: 0.7rem;
+    }
+  }
+  
