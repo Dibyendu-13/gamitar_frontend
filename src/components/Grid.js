@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 import "./Grid.css";
 
-const socket = io("https://0370-43-241-193-32.ngrok-free.app");
+// Replace with your ngrok URL
+const socket = io("https://cda3-43-241-193-32.ngrok-free.app", {
+  transports: ["websocket"], // Force WebSocket transport
+});
 
 const Grid = () => {
   const [grid, setGrid] = useState(
@@ -12,35 +15,45 @@ const Grid = () => {
   );
   const [playerCount, setPlayerCount] = useState(0);
   const [canUpdate, setCanUpdate] = useState(true);
-  const [hasUpdated, setHasUpdated] = useState(false); // Track if player has already updated
+  const [hasUpdated, setHasUpdated] = useState(false);
   const [history, setHistory] = useState([]);
   const [showingHistory, setShowingHistory] = useState(false);
 
   useEffect(() => {
-    socket.on("grid-update", (updatedGrid) => setGrid(updatedGrid));
-    socket.on("player-count", (count) => setPlayerCount(count));
-    socket.on("grid-history", (updateHistory) => setHistory(updateHistory));
+    // Setup socket event listeners
+    socket.on("grid-update", (updatedGrid) => {
+      console.log("Grid updated:", updatedGrid);
+      setGrid(updatedGrid);
+    });
+
+    socket.on("player-count", (count) => {
+      console.log("Player count received on frontend:", count);
+      setPlayerCount(count);
+    });
+
+    socket.on("grid-history", (updateHistory) => {
+      console.log("History received:", updateHistory);
+      setHistory(updateHistory);
+    });
+
     socket.on("grouped-updates", (groupedBatch) => {
       console.log("Grouped Updates:", groupedBatch);
     });
 
+    // Handle connection and disconnection logs
+    socket.on("connect", () => console.log("Connected to server:", socket.id));
+    socket.on("disconnect", () => console.warn("Disconnected from server"));
+
+    // Cleanup event listeners on unmount
     return () => {
       socket.off("grid-update");
       socket.off("player-count");
       socket.off("grid-history");
       socket.off("grouped-updates");
-    };
-  }, []);
-
-  useEffect(() => {
-    socket.on("connect", () => console.log("Connected to server"));
-    socket.on("disconnect", () => console.warn("Disconnected from server"));
-
-    return () => {
       socket.off("connect");
       socket.off("disconnect");
     };
-  }, []);
+  }, []); // Empty dependency array ensures this runs only once
 
   const handleBlockClick = (row, col) => {
     if (!canUpdate || hasUpdated || grid[row][col]) return;
@@ -51,7 +64,6 @@ const Grid = () => {
       return;
     }
 
-    // Optimistically update grid locally
     setGrid((prevGrid) => {
       const newGrid = prevGrid.map((rowArr, rowIndex) =>
         rowArr.map((cell, colIndex) =>
@@ -61,10 +73,9 @@ const Grid = () => {
       return newGrid;
     });
 
-    // Emit update to the server
     socket.emit("update-grid", { row, col, char: unicodeChar });
 
-    setHasUpdated(true); // Prevent further updates
+    setHasUpdated(true);
   };
 
   const toggleHistory = () => {
@@ -72,10 +83,17 @@ const Grid = () => {
   };
 
   const revertToState = (historyIndex) => {
-    const revertedGrid = history.slice(0, historyIndex + 1).reduce((grid, update) => {
-      grid[update.row][update.col] = update.char;
-      return grid;
-    }, Array(10).fill(null).map(() => Array(10).fill("")));
+    const revertedGrid = history
+      .slice(0, historyIndex + 1)
+      .reduce(
+        (grid, update) => {
+          grid[update.row][update.col] = update.char;
+          return grid;
+        },
+        Array(10)
+          .fill(null)
+          .map(() => Array(10).fill(""))
+      );
     setGrid(revertedGrid);
   };
 
