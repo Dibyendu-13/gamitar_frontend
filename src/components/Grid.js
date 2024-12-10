@@ -3,7 +3,7 @@ import { io } from "socket.io-client";
 import "./Grid.css";
 
 // Replace with your ngrok URL
-const socket = io("https://6741-43-241-193-32.ngrok-free.app", {
+const socket = io("https://d6d5-2409-40c1-2a-9b7b-980b-48f2-fd3f-f060.ngrok-free.app", {
   transports: ["websocket"], // Force WebSocket transport
 });
 
